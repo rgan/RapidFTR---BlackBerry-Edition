@@ -3,6 +3,7 @@ package com.rapidftr.datastore;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import com.rapidftr.utilities.DateComparator;
 import net.rim.device.api.system.Bitmap;
 
 import com.rapidftr.model.Child;
@@ -14,7 +15,7 @@ public class Children {
 	public Children(Vector vector) {
 		this.vector = vector;
 	}
-	
+
 	public Children(Child[] array) {
 		vector = new Vector();
 		for(int i=0;i<array.length;i++) {
@@ -55,11 +56,11 @@ public class Children {
 	}
 
 	public Children sortByRecentlyAdded() {
-		return sort(new String[]{"created_at"}, false);
+        return sortByDateFieldAscending("created_at");
 	}
 
 	public Children sortByRecentlyUpdated() {
-		return sort(new String[]{"last_updated_at"}, false);
+		return sortByDateFieldAscending("last_updated_at");
 	}
 
 	public Children sortByName() {
@@ -76,5 +77,18 @@ public class Children {
 			childrenAndImages[i] = childImagePair;
 		}
 		return childrenAndImages;
+	}
+
+    private Children sortByDateFieldAscending(final String fieldName) {
+        Child[] children = toArray();
+        final DateComparator comparator = new DateComparator();
+		net.rim.device.api.util.Arrays.sort(children,
+				new net.rim.device.api.util.Comparator() {
+					public int compare(Object o1, Object o2) {
+						return  comparator.compare((String)((Child) o2).getField(fieldName),
+                                (String) ((Child) o1).getField(fieldName));
+					}
+				});
+		return new Children(children);
 	}
 }

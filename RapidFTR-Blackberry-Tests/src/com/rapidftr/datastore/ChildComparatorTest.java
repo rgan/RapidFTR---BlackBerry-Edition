@@ -112,4 +112,11 @@ public class ChildComparatorTest {
 		childComparator.setAttributes(new String[] {CHILD_LAST_KNOWN_LOCATION_KEY, CHILD_NAME_KEY});
 		Assert.assertTrue(childComparator.compare(firstChild, secondChild) == 0);
 	}
+
+    @Test
+    public void shouldSortByDateCreated() {
+        Child firstChild = new Child();
+        System.out.println(firstChild.getField("created_at"));
+        //firstChild.setField("created_at", yesterday);
+    }
 }
